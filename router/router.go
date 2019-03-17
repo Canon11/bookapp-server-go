@@ -1,11 +1,15 @@
 package router
 
-import "github.com/gin-gonic/gin"
+import (
+	"bookapp/controllers"
+
+	"github.com/gin-gonic/gin"
+)
 
 func GetRouter() *gin.Engine {
 	router := gin.Default()
 
-	router.GET("/books", nil)
+	router.GET("/books", controllers.BookIndex)
 	router.POST("/books", nil)
 	router.GET("/books/:id", nil)
 	router.PATCH("/books/:id", nil)
