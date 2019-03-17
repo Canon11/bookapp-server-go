@@ -15,11 +15,11 @@ func GetRouter() *gin.Engine {
 	router.PATCH("/books/:id", controllers.BookEdit)
 	router.DELETE("/books/:id", controllers.BookDelete)
 
-	router.GET("/categories", nil)
-	router.POST("/categories", nil)
-	router.GET("/categories/:id", nil)
-	router.PATCH("/categories/:id", nil)
-	router.DELETE("/categories/:id", nil)
+	router.GET("/categories", controllers.CategoryList)
+	router.POST("/categories", controllers.CategoryCreate)
+	router.GET("/categories/:id", controllers.CategoryDetail)
+	router.PATCH("/categories/:id", controllers.CategoryEdit)
+	router.DELETE("/categories/:id", controllers.CategoryDelete)
 
 	return router
 }
