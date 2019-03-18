@@ -2,7 +2,6 @@ package models
 
 import (
 	"context"
-	"log"
 	"os"
 
 	"cloud.google.com/go/datastore"
@@ -33,14 +32,13 @@ func NewClient() (*ModelClient, error) {
 func (client *ModelClient) ListBook(ctx context.Context) ([]*Book, error) {
 	var books []*Book
 
-	// 取ってきた時にbooksにIDを入れてもらう
-	keys, err := client.dsClient.GetAll(ctx, datastore.NewQuery("Book"), &books)
+	query := datastore.NewQuery("Book")
+	keys, err := client.dsClient.GetAll(ctx, query, &books)
 	if err != nil {
 		return nil, err
 	}
 
 	for i, key := range keys {
-		log.Println(key.ID)
 		books[i].ID = key.ID
 	}
 
@@ -58,10 +56,10 @@ func (client *ModelClient) GetBook(ctx context.Context, bookId int64) (*Book, er
 }
 
 func (client *ModelClient) CreateBook(ctx context.Context, book *Book) error {
-	// 数値IDを自動割り当て
 	newKey := datastore.IncompleteKey("Book", nil)
 	if _, err := client.dsClient.Put(ctx, newKey, book); err != nil {
 		return err
 	}
+
 	return nil
 }
