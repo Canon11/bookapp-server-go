@@ -72,6 +72,20 @@ func BookEdit(c *gin.Context) {
 }
 
 func BookDelete(c *gin.Context) {
-	res := testResp{ID: 6, Name: "book_delete"}
-	c.JSON(200, res)
+	client, err := models.NewClient()
+	if err != nil {
+		c.Error(err)
+	}
+
+	paramID := c.Param("id")
+	bookID, err := strconv.Atoi(paramID)
+	if err != nil {
+		c.Error(err)
+	}
+
+	if err = client.DeleteBook(c, int64(bookID)); err != nil {
+		c.Error(err)
+	}
+
+	c.JSON(200, nil)
 }

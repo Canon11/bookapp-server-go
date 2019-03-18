@@ -64,3 +64,8 @@ func (client *ModelClient) CreateBook(ctx context.Context, book *Book) error {
 
 	return nil
 }
+
+func (client *ModelClient) DeleteBook(ctx context.Context, bookID int64) error {
+	k := datastore.IDKey("Book", bookID, nil)
+	return client.dsClient.Delete(ctx, k)
+}
