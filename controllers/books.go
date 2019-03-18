@@ -1,6 +1,9 @@
 package controllers
 
 import (
+	"bookapp/models"
+	"log"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -10,11 +13,34 @@ type testResp struct {
 }
 
 func BookList(c *gin.Context) {
-	res := testResp{ID: 2, Name: "book_list"}
-	c.JSON(200, res)
+	client, err := models.NewClient()
+	if err != nil {
+		c.Error(err)
+	}
+
+	books, err := client.ListBook(c)
+	log.Printf("%+v", books)
+	if err != nil {
+		c.Error(err)
+	}
+
+	c.JSON(200, books)
 }
 
 func BookCreate(c *gin.Context) {
+	client, err := models.NewClient()
+	if err != nil {
+		c.Error(err)
+	}
+
+	book := models.Book{
+		Name:     "TestBook",
+		Category: 1,
+	}
+	if err := client.CreateBook(c, &book); err != nil {
+		c.Error(err)
+	}
+
 	res := testResp{ID: 3, Name: "book_create"}
 	c.JSON(200, res)
 }
