@@ -34,16 +34,20 @@ func BookCreate(c *gin.Context) {
 		c.Error(err)
 	}
 
+	category, err := strconv.Atoi(c.PostForm("category"))
+	if err != nil {
+		c.Error(err)
+	}
+
 	book := models.Book{
-		Name:     "TestBook",
-		Category: 1,
+		Name:     c.PostForm("name"),
+		Category: category,
 	}
 	if err := client.CreateBook(c, &book); err != nil {
 		c.Error(err)
 	}
 
-	res := testResp{ID: 3, Name: "book_create"}
-	c.JSON(200, res)
+	c.JSON(200, nil)
 }
 
 func BookDetail(c *gin.Context) {
