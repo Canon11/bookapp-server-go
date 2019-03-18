@@ -45,13 +45,14 @@ func (client *ModelClient) ListBook(ctx context.Context) ([]*Book, error) {
 	return books, nil
 }
 
-func (client *ModelClient) GetBook(ctx context.Context, bookId int64) (*Book, error) {
-	k := datastore.IDKey("Book", bookId, nil)
+func (client *ModelClient) GetBook(ctx context.Context, bookID int64) (*Book, error) {
+	k := datastore.IDKey("Book", bookID, nil)
 	book := new(Book)
 	if err := client.dsClient.Get(ctx, k, book); err != nil {
 		return nil, err
 	}
 
+	book.ID = k.ID
 	return book, nil
 }
 

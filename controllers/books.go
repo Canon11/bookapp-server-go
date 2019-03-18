@@ -3,6 +3,7 @@ package controllers
 import (
 	"bookapp/models"
 	"log"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -46,8 +47,23 @@ func BookCreate(c *gin.Context) {
 }
 
 func BookDetail(c *gin.Context) {
-	res := testResp{ID: 4, Name: "book_detail"}
-	c.JSON(200, res)
+	client, err := models.NewClient()
+	if err != nil {
+		c.Error(err)
+	}
+
+	paramID := c.Param("id")
+	bookID, err := strconv.Atoi(paramID)
+	if err != nil {
+		c.Error(err)
+	}
+
+	book, err := client.GetBook(c, int64(bookID))
+	if err != nil {
+		c.Error(err)
+	}
+
+	c.JSON(200, book)
 }
 
 func BookEdit(c *gin.Context) {
