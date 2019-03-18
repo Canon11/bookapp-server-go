@@ -1,7 +1,7 @@
 DATA_DIR=./data
 
 run:
-	sh env.sh && go run main.go
+	go run main.go
 
 start_db:
 	gcloud beta emulators datastore start --data-dir=${DATA_DIR} --no-store-on-disk
