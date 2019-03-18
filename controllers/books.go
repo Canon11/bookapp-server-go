@@ -71,7 +71,32 @@ func BookDetail(c *gin.Context) {
 }
 
 func BookEdit(c *gin.Context) {
-	res := testResp{ID: 5, Name: "book_edit"}
+	client, err := models.NewClient()
+	if err != nil {
+		c.Error(err)
+	}
+
+	category, err := strconv.Atoi(c.PostForm("category"))
+	if err != nil {
+		c.Error(err)
+	}
+
+	paramID := c.Param("id")
+	bookID, err := strconv.Atoi(paramID)
+	if err != nil {
+		c.Error(err)
+	}
+
+	book := models.Book{
+		ID:       int64(bookID),
+		Name:     c.PostForm("name"),
+		Category: category,
+	}
+	res, err := client.EditBook(c, &book)
+	if err != nil {
+		c.Error(err)
+	}
+
 	c.JSON(200, res)
 }
 

@@ -65,6 +65,26 @@ func (client *ModelClient) CreateBook(ctx context.Context, book *Book) error {
 	return nil
 }
 
+func (client *ModelClient) EditBook(ctx context.Context, book *Book) (*Book, error) {
+	k := datastore.IDKey("Book", book.ID, nil)
+	b := new(Book)
+
+	_, err := client.dsClient.RunInTransaction(ctx, func(tx *datastore.Transaction) error {
+		if err := tx.Get(k, b); err != nil {
+			return err
+		}
+
+		b.Name = book.Name
+		b.Category = book.Category
+		_, err := tx.Put(k, b)
+
+		return err
+	})
+
+	b.ID = k.ID
+	return b, err
+}
+
 func (client *ModelClient) DeleteBook(ctx context.Context, bookID int64) error {
 	k := datastore.IDKey("Book", bookID, nil)
 	return client.dsClient.Delete(ctx, k)
