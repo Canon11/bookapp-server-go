@@ -9,7 +9,7 @@ import (
 type Book struct {
 	ID       int64  `json:"id"`
 	Name     string `json:"name" datastore:"Name,noindex"`
-	Category int    `json:"category" datastore:"Category,noindex"`
+	Category int    `json:"category" datastore:"Category"`
 }
 
 func (client *ModelClient) ListBook(ctx context.Context) ([]*Book, error) {

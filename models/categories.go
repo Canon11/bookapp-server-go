@@ -2,6 +2,8 @@ package models
 
 import (
 	"context"
+	"errors"
+	"fmt"
 
 	"cloud.google.com/go/datastore"
 )
@@ -67,6 +69,17 @@ func (client *ModelClient) EditCategory(ctx context.Context, category *Category)
 }
 
 func (client *ModelClient) DeleteCategory(ctx context.Context, categoryID int64) error {
+	query := datastore.NewQuery("Book").Filter("Category = ", categoryID)
+
+	bookCnt, err := client.dsClient.Count(ctx, query)
+	if err != nil {
+		return err
+	}
+
+	if bookCnt > 0 {
+		return errors.New(fmt.Sprintf("category %d is already used.", categoryID))
+	}
+
 	k := datastore.IDKey("Category", categoryID, nil)
 	return client.dsClient.Delete(ctx, k)
 }
