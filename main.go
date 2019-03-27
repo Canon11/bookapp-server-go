@@ -17,5 +17,6 @@ func loadEnv() {
 func main() {
 	loadEnv()
 	r := router.GetRouter()
+
 	r.Run()
 }
