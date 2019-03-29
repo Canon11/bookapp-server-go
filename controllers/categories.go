@@ -48,7 +48,7 @@ func CategoryDetail(c *gin.Context) {
 		c.Error(err)
 	}
 
-	category, err := client.GetBook(c, int64(categoryID))
+	category, err := client.GetCategory(c, int64(categoryID))
 	if err != nil {
 		c.Error(err)
 	}
