@@ -20,7 +20,6 @@ func BookList(c *gin.Context) {
 	}
 
 	books, err := client.ListBook(c)
-	log.Printf("%+v", books)
 	if err != nil {
 		c.Error(err)
 	}
@@ -34,14 +33,15 @@ func BookCreate(c *gin.Context) {
 		c.Error(err)
 	}
 
-	category, err := strconv.Atoi(c.PostForm("category"))
+	log.Print(c.PostForm("category_id"))
+	categoryID, err := strconv.Atoi(c.PostForm("category_id"))
 	if err != nil {
 		c.Error(err)
 	}
 
 	book := models.Book{
 		Name:     c.PostForm("name"),
-		Category: category,
+		Category: categoryID,
 	}
 	if err := client.CreateBook(c, &book); err != nil {
 		c.Error(err)
@@ -76,7 +76,7 @@ func BookEdit(c *gin.Context) {
 		c.Error(err)
 	}
 
-	category, err := strconv.Atoi(c.PostForm("category"))
+	categoryID, err := strconv.Atoi(c.PostForm("category_id"))
 	if err != nil {
 		c.Error(err)
 	}
@@ -90,7 +90,7 @@ func BookEdit(c *gin.Context) {
 	book := models.Book{
 		ID:       int64(bookID),
 		Name:     c.PostForm("name"),
-		Category: category,
+		Category: categoryID,
 	}
 	res, err := client.EditBook(c, &book)
 	if err != nil {
