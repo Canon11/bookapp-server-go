@@ -42,6 +42,7 @@ func BookCreate(c *gin.Context) {
 	book := models.Book{
 		Name:     c.PostForm("name"),
 		Category: categoryID,
+		ImageUrl: c.PostForm("image_url"),
 	}
 	if err := client.CreateBook(c, &book); err != nil {
 		c.Error(err)
@@ -91,6 +92,7 @@ func BookEdit(c *gin.Context) {
 		ID:       int64(bookID),
 		Name:     c.PostForm("name"),
 		Category: categoryID,
+		ImageUrl: c.PostForm("image_url"),
 	}
 	res, err := client.EditBook(c, &book)
 	if err != nil {

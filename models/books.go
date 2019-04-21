@@ -10,6 +10,7 @@ type Book struct {
 	ID       int64  `json:"id"`
 	Name     string `json:"name" datastore:"Name,noindex"`
 	Category int    `json:"category" datastore:"Category"`
+	ImageUrl string `json:"image_url" datastore:"ImageUrl,noindex"`
 }
 
 func (client *ModelClient) ListBook(ctx context.Context) ([]*Book, error) {
